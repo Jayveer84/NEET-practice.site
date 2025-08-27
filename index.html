@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NEET Practice – Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Free NEET chapter-wise MCQ practice for Physics, Chemistry, and Biology." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="container">
+    <h1>NEET Practice</h1>
+    <p class="tagline">Chapter-wise MCQs • Instant score • Review mistakes</p>
+  </header>
+
+  <main class="container card">
+    <h2>Start a Quiz</h2>
+
+    <label class="field">
+      <span>Subject</span>
+      <select id="subject">
+        <option value="physics">Physics</option>
+        <option value="chemistry">Chemistry</option>
+        <option value="biology">Biology</option>
+      </select>
+    </label>
+
+    <label class="field">
+      <span>Chapter</span>
+      <select id="chapter">
+        <!-- Options are filled by JS -->
+      </select>
+    </label>
+
+    <label class="field">
+      <span>Number of Questions</span>
+      <select id="count">
+        <option>5</option>
+        <option selected>10</option>
+        <option>15</option>
+        <option>20</option>
+      </select>
+    </label>
+
+    <button id="startBtn" class="btn">Start Quiz</button>
+  </main>
+
+  <footer class="container foot">
+    <small>Tip: Add your own questions in <code>questions.js</code></small>
+  </footer>
+
+  <script src="questions.js"></script>
+  <script>
+    // Populate chapters based on chosen subject
+    const subjectEl = document.getElementById('subject');
+    const chapterEl = document.getElementById('chapter');
+    const countEl = document.getElementById('count');
+    const startBtn = document.getElementById('startBtn');
+
+    function refreshChapters() {
+      const subj = subjectEl.value;
+      const chapters = Object.keys(QUESTIONS[subj] || {});
+      chapterEl.innerHTML = chapters.map(ch =>
+        `<option value="${ch}">${ch.replaceAll('_',' ')}</option>`
+      ).join('');
+    }
+
+    subjectEl.addEventListener('change', refreshChapters);
+    refreshChapters(); // initial
+
+    startBtn.addEventListener('click', () => {
+      const s = subjectEl.value;
+      const c = chapterEl.value;
+      const n = parseInt(countEl.value, 10);
+      // Go to quiz page with params
+      location.href = `quiz.html?subject=${encodeURIComponent(s)}&chapter=${encodeURIComponent(c)}&n=${n}`;
+    });
+  </script>
+</body>
+</html>
